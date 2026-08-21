@@ -130,6 +130,13 @@
                 </div>
               </div>
             </sc-for>
+            <div style="padding: 19px 23px 21px; border-bottom: 1px solid #1f2225; display: flex; flex-direction: column; gap: 11px;">
+              <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 10px;">
+                <div style="font-family: 'Big Shoulders Display', 'Arial Narrow', sans-serif; font-weight: 600; font-size: 22px; line-height: 1; letter-spacing: .1em; text-transform: uppercase;">Diet notes</div>
+                <div style="font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: #8f8b82;">Saved as you type</div>
+              </div>
+              <textarea value="{{ dietNote }}" onChange="{{ onDietNote }}" rows="4" placeholder="Meals, macros, cravings, what worked." style="width: 100%; resize: vertical; min-height: 92px; padding: 12px 13px; background: #101112; border: 1px solid #2b2f33; border-radius: 2px; color: #ece8e0; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 1.6;"></textarea>
+            </div>
             <div style="padding: 17px 23px; display: flex; align-items: center; justify-content: space-between; gap: 12px;">
               <div style="font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: {{ dayStatusColor }};">{{ dayStatus }}</div>
               <div style="font-size: 11px; color: #8f8b82;">{{ taskCountLabel }}</div>
@@ -363,6 +370,14 @@ class Component extends DCLogic {
       startLabel: this.fmt(this.parse(data.startDate)),
       startDate: data.startDate,
       attempt: data.attempt || 1,
+      dietNote: this.dayData(selected).dietNote || '',
+      onDietNote: (e) => {
+        const v = e.target.value;
+        const d = this.state.data;
+        const days = Object.assign({}, d.days);
+        days[selected] = Object.assign({}, days[selected] || {}, { dietNote: v });
+        this.save(Object.assign({}, d, { days }));
+      },
       quote: q[0],
       quoteBy: q[1],
       missed: (this.props.strictMode ?? true) && !!missedDay,
