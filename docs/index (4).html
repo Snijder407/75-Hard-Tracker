@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;600;700;800&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="75 HARD" />
+<meta name="theme-color" content="#0d0e0f" />
+<link rel="manifest" href="./manifest.json" />
+<link rel="apple-touch-icon" sizes="180x180" href="./assets/icon-180.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="./assets/icon-192.png" />
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      try { navigator.serviceWorker.register('./sw.js'); } catch (e) {}
+    });
+  }
+</script>
+<style>
+  html, body { margin: 0; padding: 0; background: #0d0e0f; color-scheme: dark; overflow-x: hidden; -webkit-text-size-adjust: 100%; touch-action: pan-y; }
+  input, textarea, select { font-size: 16px; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  a { color: #c0904e; text-decoration: none; border-bottom: 1px solid rgba(192,144,78,.4); }
+  a:hover { color: #d9ab68; border-bottom-color: #d9ab68; }
+  input[type="date"] { font-family: 'IBM Plex Mono', monospace; color-scheme: dark; }
+</style>
+</helmet>
+<div style="position: relative; min-height: 100vh; overflow: hidden; background: #0d0e0f; background-image: radial-gradient(1200px 420px at 50% -140px, rgba(192,144,78,.14), transparent 70%), repeating-linear-gradient(135deg, rgba(255,255,255,.014) 0px, rgba(255,255,255,.014) 1px, transparent 1px, transparent 7px); color: #ece8e0; font-family: 'IBM Plex Mono', ui-monospace, monospace; padding: calc(30px + env(safe-area-inset-top)) calc(20px + env(safe-area-inset-right)) calc(68px + env(safe-area-inset-bottom)) calc(20px + env(safe-area-inset-left)); display: flex; justify-content: center;">
+  <div aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 0;">
+    <img src="./assets/buck-watermark.png" alt="" style="position: absolute; top: -50px; right: -70px; width: min(46vw, 460px); height: auto; transform: rotate(7deg); opacity: .06;" />
+    <img src="./assets/spartan-figure.png" alt="" style="position: absolute; bottom: -40px; left: -50px; width: min(50vw, 520px); height: auto; opacity: .07;" />
+    <img src="./assets/buck-watermark.png" alt="" style="position: absolute; top: 62%; left: 44%; width: 170px; height: auto; transform: rotate(-16deg) scaleX(-1); opacity: .035;" />
+    <img src="./assets/spartan-figure.png" alt="" style="position: absolute; top: 34%; right: 6%; width: 210px; height: auto; transform: rotate(4deg); opacity: .03;" />
+    <div style="position: absolute; top: 3%; left: 1%; font-family: 'Big Shoulders Display', 'Arial Narrow', sans-serif; font-weight: 800; font-size: 300px; line-height: .8; letter-spacing: -.03em; color: #ffffff; opacity: .02;">75</div>
+  </div>
+  <div style="position: relative; z-index: 1; width: 100%; max-width: 1080px; display: flex; flex-direction: column; gap: 24px;">
+
+    <header style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 18px; padding-bottom: 18px; border-bottom: 1px solid #2b2f33; box-shadow: 0 1px 0 rgba(192,144,78,.18);">
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; align-items: center; gap: 11px;">
+          <span style="display: block; width: 22px; height: 2px; background: #c0904e;"></span>
+          <span style="font-size: 10px; letter-spacing: .34em; text-transform: uppercase; color: #8f8b82;">Daily log · no compromises</span>
+        </div>
+        <h1 style="margin: 0; font-family: 'Big Shoulders Display', 'Arial Narrow', sans-serif; font-weight: 700; font-size: 68px; line-height: .82; letter-spacing: .05em; text-transform: uppercase;">75 Hard</h1>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 5px;">
+        <div style="font-size: 10px; letter-spacing: .3em; text-transform: uppercase; color: #8f8b82;">{{ headerLabel }}</div>
+        <div style="font-family: 'Big Shoulders Display', 'Arial Narrow', sans-serif; font-weight: 700; font-size: 48px; line-height: .88; letter-spacing: .03em; color: #c0904e;">{{ headerValue }}</div>
+      </div>
+    </header>
+
+    <sc-if value="{{ showSetup }}" hint-placeholder-val="{{ true }}">
+      <div style="background: #16181a; border: 1px solid #2b2f33; border-radius: 3px; box-shadow: inset 0 1px 0 rgba(255,255,255,.045), 0 18px 40px rgba(0,0,0,.45); padding: 36px 32px; display: flex; flex-direction: column; gap: 22px; max-width: 560px;">
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <h2 style="margin: 0; font-family: 'Big Shoulders Display', 'Arial Narrow', sans-serif; font-weight: 700; font-size: 36px; line-height: 1; text-transform: uppercase; letter-spacing: .05em;">Set your start date</h2>
+          <p style="margin: 0; font-size: 13px; line-height: 1.75; color: #9b968c; max-width: 44ch; text-wrap: pretty;">Day 1 begins on the date you pick. Miss any task on any day and the count goes back to Day 1. No substitutions.</p>
+        </div>
+        <input type="date" ref="{{ dateRef }}" defaultValue="{{ today }}" style="width: 100%; padding: 15px 14px; font-size: 16px; background: #101112; border: 1px solid #33383c; border-radius: 2px; color: #ece8e0; min-height: 54px;" />
+        <button type="button" onClick="{{ onStart }}" style="min-height: 56px; background: #c0904e; color: #101112; border: none; border-radius: 2px; font-family: 'Big Shoulders Display', 'Arial Narrow', sans-serif; font-weight: 700; font-size: 19px; letter-spacing: .24em; text-transform: uppercase; cursor: pointer;" style-hover="background: #d9ab68;">Begin day 1</button>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ showMain }}" hint-placeholder-val="{{ true }}">
+      <div style="display: flex; flex-direction: column; gap: 24px;">
+
+        <div style="background: #191715; border: 1px solid #2f2a24; border-left: 2px solid #c0904e; border-radius: 3px; padding: 24px 28px; display: flex; flex-direction: column; gap: 13px;">
+          <div style="font-size: 10px; letter-spacing: .32em; text-transform: uppercase; color: #c0904e;">Today's word on discipline</div>
+          <div style="font-size: 17px; line-height: 1.7; color: #ece8e0; max-width: 68ch; text-wrap: pretty;">{{ quote }}</div>
+          <div style="font-size: 11px; letter-spacing: .24em; text-transform: uppercase; color: #8f8b82;">— {{ quoteBy }}</div>
+        </div>
+
+        <sc-if value="{{ missed }}" hint-placeholder-val="{{ false }}">
+          <div style="border: 1px solid #7d3b28; background: #1c1512; border-radius: 3px; padding: 19px 22px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;">
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+              <div style="font-family: 'Big Shoulders Display', 'Arial Narrow', sans-serif; font-weight: 700; font-size: 23px; letter-spacing: .12em; text-transform: uppercase; color: #b4472c;">Day {{ missedDay }} incomplete</div>
+              <div style="font-size: 13px; color: #9b968c; line-height: 1.5;">Tick what you actually did, or go back to Day 1.</div>
+            </div>
+            <button type="button" onClick="{{ onReset }}" style="min-height: 48px; padding: 0 24px; background: #b4472c; color: #101112; border: none; border-radius: 2px; font-family: 'Big Shoulders Display', 'Arial Narrow', sans-serif; font-weight: 700; font-size: 16px; letter-spacing: .2em; text-transform: uppercase; cursor: pointer;" style-hover="background: #cc5637;">Reset to day 1</button>
+          </div>
+        </sc-if>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 1px; background: #24272a; border: 1px solid #2b2f33; border-radius: 3px; overflow: hidden;">
+          <div style="flex: 1 1 150px; background: #16181a; padding: 19px 21px; display: flex; flex-direction: column; gap: 9px;">
+            <div style="font-size: 10px; letter-spacing: .26em; text-transform: uppercase; color: #8f8b82;">Days complete</div>
+            <div style="font-family: 'Big Shoulders Display', 'Arial Narrow', sans-serif; font-weight: 700; font-size: 42px; line-height: .9;">{{ doneCount }}</div>
+          </div>
+          <div style="flex: 1 1 150px; background: #16181a; padding: 19px 21px; display: flex; flex-direction: column; gap: 9px;">
+            <div style="font-size: 10px; letter-spacing: .26em; text-transform: uppercase; color: #8f8b82;">Remaining</div>
+            <div style="font-family: 'Big Shoulders Display', 'Arial Narrow', sans-serif; font-weight: 700; font-size: 42px; line-height: .9;">{{ remaining }}</div>
+          </div>
+          <div style="flex: 1 1 170px; background: #16181a; padding: 19px 21px; display: flex; flex-direction: column; gap: 9px;">
+            <div style="font-size: 10px; letter-spacing: .26em; text-transform: uppercase; color: #8f8b82;">Started</div>
+            <div style="font-family: 'Big Shoulders Display', 'Arial Narrow', sans-serif; font-weight: 700; font-size: 29px; line-height: 1; text-transform: uppercase;">{{ startLabel }}</div>
+            <input type="date" value="{{ startDate }}" onChange="{{ onChangeStart }}" style="width: 100%; padding: 6px; font-size: 16px; background: transparent; border: 1px solid #2b2f33; border-radius: 2px; color: #8f8b82; cursor: pointer;" style-hover="border-color: #c0904e; color: #ece8e0;" />
+          </div>
+          <div style="flex: 2 1 260px; background: #16181a; padding: 19px 21px; display: flex; flex-direction: column; gap: 15px; justify-content: space-between;">
+            <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 10px;">
+              <div style="font-size: 10px; letter-spacing: .26em; text-transform: uppercase; color: #8f8b82;">Progress</div>
+              <div style="font-family: 'Big Shoulders Display', 'Arial Narrow', sans-serif; font-weight: 700; font-size: 36px; line-height: .9; color: #c0904e;">{{ pct }}%</div>
+            </div>
+            <div style="height: 10px; background: #101112; border: 1px solid #2b2f33; border-radius: 1px;">
+              <div style="height: 100%; background: linear-gradient(90deg, #9c7238, #d9ab68); width: {{ pct }}%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start;">
+
+          <section style="flex: 1 1 400px; min-width: 320px; background: #16181a; border: 1px solid #2b2f33; border-radius: 3px; box-shadow: inset 0 1px 0 rgba(255,255,255,.04);">
+            <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 10px; padding: 21px 23px 17px; border-bottom: 1px solid #2b2f33;">
+              <h2 style="margin: 0; font-family: 'Big Shoulders Display', 'Arial Narrow', sans-serif; font-weight: 700; font-size: 33px; line-height: .9; text-transform: uppercase; letter-spacing: .05em;">Day {{ selected }}</h2>
+              <div style="font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: #8f8b82;">{{ selectedDate }}</div>
+            </div>
+            <sc-for list="{{ tasks }}" as="t" hint-placeholder-count="6">
+              <div onClick="{{ t.toggle }}" role="checkbox" style="display: flex; align-items: center; gap: 16px; padding: 15px 23px; min-height: 70px; border-bottom: 1px solid #1f2225; cursor: pointer; user-select: none;" style-hover="background: #1c1f21;">
+                <div style="flex: 0 0 32px; width: 32px; height: 32px; border-radius: 2px; display: flex; align-items: center; justify-content: center; border: 1px solid {{ t.boxBorder }}; background: {{ t.boxBg }}; font-size: 19px; color: #c0904e; line-height: 1;">{{ t.mark }}</div>
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                  <div style="font-family: 'Big Shoulders Display', 'Arial Narrow', sans-serif; font-weight: 600; font-size: 22px; line-height: 1; letter-spacing: .1em; text-transform: uppercase; color: {{ t.titleColor }}; text-decoration: {{ t.strike }};">{{ t.label }}</div>
+                  <div style="font-size: 12px; color: #8f8b82; line-height: 1.45;">{{ t.sub }}</div>
+                </div>
+              </div>
+            </sc-for>
+            <div style="padding: 17px 23px; display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+              <div style="font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: {{ dayStatusColor }};">{{ dayStatus }}</div>
+              <div style="font-size: 11px; color: #8f8b82;">{{ taskCountLabel }}</div>
+            </div>
+          </section>
+
+          <section style="flex: 1 1 380px; min-width: 300px; display: flex; flex-direction: column; gap: 24px;">
+            <div style="background: #16181a; border: 1px solid #2b2f33; border-radius: 3px; box-shadow: inset 0 1px 0 rgba(255,255,255,.04); padding: 21px 23px 23px; display: flex; flex-direction: column; gap: 13px;">
+              <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 10px;">
+                <div style="font-family: 'Big Shoulders Display', 'Arial Narrow', sans-serif; font-weight: 700; font-size: 27px; line-height: 1; letter-spacing: .05em; text-transform: uppercase;">Diet notes</div>
+                <div style="font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: #8f8b82;">Saved as you type</div>
+              </div>
+              <textarea value="{{ dietNote }}" onChange="{{ onDietNote }}" rows="4" placeholder="Meals, macros, cravings, what worked." style="width: 100%; resize: vertical; min-height: 92px; padding: 12px 13px; background: #101112; border: 1px solid #2b2f33; border-radius: 2px; color: #ece8e0; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 16px; line-height: 1.6;"></textarea>
+            </div>
+            <div style="background: #16181a; border: 1px solid #2b2f33; border-radius: 3px; box-shadow: inset 0 1px 0 rgba(255,255,255,.04); padding: 21px 23px 23px; display: flex; flex-direction: column; gap: 13px;">
+              <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 10px;">
+                <div style="font-family: 'Big Shoulders Display', 'Arial Narrow', sans-serif; font-weight: 700; font-size: 27px; line-height: 1; letter-spacing: .05em; text-transform: uppercase;">Progress photo</div>
+                <div style="font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: #8f8b82;">{{ photoHint }}</div>
+              </div>
+              <sc-if value="{{ hasPhoto }}" hint-placeholder-val="{{ false }}">
+                <div style="display: flex; flex-direction: column; gap: 11px;">
+                  <div role="img" aria-label="Progress photo" style="width: 100%; height: 340px; background-color: #101112; background-image: {{ photoBg }}; background-size: contain; background-position: center; background-repeat: no-repeat; border: 1px solid #2b2f33; border-radius: 2px;"></div>
+                  <div style="display: flex; flex-wrap: wrap; gap: 9px;">
+                    <button type="button" onClick="{{ onPhotoClick }}" style="min-height: 44px; padding: 0 18px; background: transparent; border: 1px solid #3a4045; border-radius: 2px; color: #ece8e0; font-family: 'Big Shoulders Display', 'Arial Narrow', sans-serif; font-weight: 600; font-size: 15px; letter-spacing: .18em; text-transform: uppercase; cursor: pointer;" style-hover="background: #c0904e; border-color: #c0904e; color: #101112;">Replace</button>
+                    <button type="button" onClick="{{ onPhotoRemove }}" style="min-height: 44px; padding: 0 18px; background: transparent; border: 1px solid #7d3b28; border-radius: 2px; color: #b4472c; font-family: 'Big Shoulders Display', 'Arial Narrow', sans-serif; font-weight: 600; font-size: 15px; letter-spacing: .18em; text-transform: uppercase; cursor: pointer;" style-hover="background: #b4472c; color: #101112;">Remove</button>
+                  </div>
+                </div>
+              </sc-if>
+              <sc-if value="{{ noPhoto }}" hint-placeholder-val="{{ true }}">
+                <button type="button" onClick="{{ onPhotoClick }}" style="width: 100%; min-height: 96px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; background: #101112; border: 1px dashed #3a4045; border-radius: 2px; color: #8f8b82; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12px; cursor: pointer;" style-hover="border-color: #c0904e; color: #ece8e0;">
+                  <span style="font-family: 'Big Shoulders Display', 'Arial Narrow', sans-serif; font-weight: 700; font-size: 20px; letter-spacing: .18em; text-transform: uppercase; color: #c0904e;">Add photo</span>
+                  <span>Camera or library · stays on this device</span>
+                </button>
+              </sc-if>
+              <input type="file" accept="image/*" ref="{{ photoRef }}" onChange="{{ onPhotoPick }}" style="display: none;" />
+            </div>
+          </section>
+
+          <section style="flex: 1 1 380px; min-width: 300px; background: #16181a; border: 1px solid #2b2f33; border-radius: 3px; box-shadow: inset 0 1px 0 rgba(255,255,255,.04);">
+            <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 10px; padding: 21px 23px 17px; border-bottom: 1px solid #2b2f33;">
+              <h2 style="margin: 0; font-family: 'Big Shoulders Display', 'Arial Narrow', sans-serif; font-weight: 700; font-size: 33px; line-height: .9; text-transform: uppercase; letter-spacing: .05em;">All 75 days</h2>
+              <div style="font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: #8f8b82;">Tap to edit</div>
+            </div>
+            <div style="padding: 21px 23px 22px; display: grid; grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); gap: 6px;">
+              <sc-for list="{{ cells }}" as="c" hint-placeholder-count="75">
+                <div onClick="{{ c.click }}" style="aspect-ratio: 1; border-radius: 2px; display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: {{ c.cursor }}; background: {{ c.bg }}; color: {{ c.fg }}; border: 1px {{ c.borderStyle }} {{ c.border }}; outline: {{ c.outline }}; outline-offset: 2px;">{{ c.n }}</div>
+              </sc-for>
+            </div>
+            <div style="padding: 0 23px 22px; display: flex; flex-wrap: wrap; gap: 18px; font-size: 11px; color: #8f8b82;">
+              <div style="display: flex; align-items: center; gap: 7px;"><span style="width: 12px; height: 12px; background: #c0904e; display: block;"></span>Complete</div>
+              <div style="display: flex; align-items: center; gap: 7px;"><span style="width: 12px; height: 12px; border: 1px dashed #b4472c; display: block;"></span>Missed</div>
+              <div style="display: flex; align-items: center; gap: 7px;"><span style="width: 12px; height: 12px; border: 1px solid #ece8e0; display: block;"></span>Today</div>
+            </div>
+          </section>
+        </div>
+
+        <footer style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; border-top: 1px solid #2b2f33; padding-top: 19px;">
+          <div style="font-size: 11px; color: #8f8b82; line-height: 1.6; max-width: 46ch;">Saved on this device. Export a backup before clearing your browser data. Attempt {{ attempt }}.</div>
+          <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <button type="button" onClick="{{ onExport }}" style="min-height: 46px; padding: 0 20px; background: transparent; border: 1px solid #3a4045; border-radius: 2px; color: #ece8e0; font-family: 'Big Shoulders Display', 'Arial Narrow', sans-serif; font-weight: 600; font-size: 16px; letter-spacing: .2em; text-transform: uppercase; cursor: pointer;" style-hover="background: #c0904e; border-color: #c0904e; color: #101112;">Export</button>
+            <button type="button" onClick="{{ onImportClick }}" style="min-height: 46px; padding: 0 20px; background: transparent; border: 1px solid #3a4045; border-radius: 2px; color: #ece8e0; font-family: 'Big Shoulders Display', 'Arial Narrow', sans-serif; font-weight: 600; font-size: 16px; letter-spacing: .2em; text-transform: uppercase; cursor: pointer;" style-hover="background: #c0904e; border-color: #c0904e; color: #101112;">Import</button>
+            <button type="button" onClick="{{ onReset }}" style="min-height: 46px; padding: 0 20px; background: transparent; border: 1px solid #7d3b28; border-radius: 2px; color: #b4472c; font-family: 'Big Shoulders Display', 'Arial Narrow', sans-serif; font-weight: 600; font-size: 16px; letter-spacing: .2em; text-transform: uppercase; cursor: pointer;" style-hover="background: #b4472c; color: #101112;">Reset</button>
+            <input type="file" accept="application/json" ref="{{ fileRef }}" onChange="{{ onImport }}" style="display: none;" />
+          </div>
+        </footer>
+      </div>
+    </sc-if>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;totalDays&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:75,&quot;tsType&quot;:&quot;number&quot;,&quot;min&quot;:1,&quot;max&quot;:365,&quot;section&quot;:&quot;Rules&quot;},&quot;waterTarget&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;3.8 litres&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Rules&quot;},&quot;strictMode&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Rules&quot;}}">
+const KEY = 'hard75_v1';
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+const QUOTES = [
+  ['We are what we repeatedly do. Excellence, then, is not an act but a habit.', 'Aristotle'],
+  ['Discipline is the bridge between goals and accomplishment.', 'Jim Rohn'],
+  ['It is not the mountain we conquer but ourselves.', 'Edmund Hillary'],
+  ['The will to win is nothing without the will to prepare.', 'Juma Ikangaa'],
+  ['Hardship often prepares an ordinary person for an extraordinary destiny.', 'C.S. Lewis'],
+  ['No man is free who is not master of himself.', 'Epictetus'],
+  ['Endurance is one of the most difficult disciplines, but it is to the one who endures that the final victory comes.', 'Buddha'],
+  ['I will prepare, and some day my chance will come.', 'Abraham Lincoln'],
+  ['Do the hard jobs first. The easy jobs will take care of themselves.', 'Dale Carnegie'],
+  ['You have power over your mind, not outside events. Realize this, and you will find strength.', 'Marcus Aurelius'],
+  ['Difficulties strengthen the mind, as labour does the body.', 'Seneca'],
+  ['Courage is being scared to death, but saddling up anyway.', 'John Wayne'],
+  ['The best way out is always through.', 'Robert Frost'],
+  ['A man who is a master of patience is master of everything else.', 'George Savile'],
+  ['It is not enough to fight. It is the spirit which we bring to the fight that decides the issue.', 'Bernard Montgomery'],
+  ['Pressure is nothing more than the shadow of great opportunity.', 'Michael Johnson'],
+  ['I hated every minute of training, but I said, don\u2019t quit. Suffer now and live the rest of your life as a champion.', 'Muhammad Ali'],
+  ['Fatigue makes cowards of us all.', 'Vince Lombardi'],
+  ['He who has a why to live can bear almost any how.', 'Friedrich Nietzsche'],
+  ['Adversity introduces a man to himself.', 'Albert Einstein'],
+  ['Nothing in the world can take the place of persistence.', 'Calvin Coolidge'],
+  ['The price of anything is the amount of life you exchange for it.', 'Henry David Thoreau'],
+  ['Never give in, never give in, never, never, never.', 'Winston Churchill'],
+  ['Out of the mountain of despair, a stone of hope.', 'Martin Luther King Jr.'],
+  ['If you want to go far, go together. If you want to go fast, go alone.', 'Proverb']
+];
+
+class Component extends DCLogic {
+  state = { data: null, loaded: false, selected: null };
+  dateRef = React.createRef();
+  fileRef = React.createRef();
+  photoRef = React.createRef();
+
+  shrink(file) {
+    return new Promise((resolve, reject) => {
+      const url = URL.createObjectURL(file);
+      const im = new Image();
+      im.onload = () => {
+        const max = 640;
+        const s = Math.min(1, max / Math.max(im.width, im.height));
+        const w = Math.round(im.width * s), h = Math.round(im.height * s);
+        const c = document.createElement('canvas');
+        c.width = w; c.height = h;
+        c.getContext('2d').drawImage(im, 0, 0, w, h);
+        URL.revokeObjectURL(url);
+        resolve(c.toDataURL('image/jpeg', 0.62));
+      };
+      im.onerror = () => { URL.revokeObjectURL(url); reject(new Error('bad image')); };
+      im.src = url;
+    });
+  }
+
+  componentDidMount() {
+    let d = null;
+    try { d = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) { d = null; }
+    if (d && d.days) {
+      Object.keys(d.days).forEach((k) => {
+        const day = d.days[k];
+        if (typeof day.photo === 'string' && day.photo.indexOf('data:') === 0) { day.photoData = day.photo; day.photo = true; }
+        if (day.photoTakenAt) delete day.photoTakenAt;
+      });
+    }
+    this.setState({ data: d, loaded: true });
+  }
+
+  tasks() {
+    return [
+      { key: 'diet',  label: 'Diet',           sub: 'No cheat meals. No alcohol.' },
+      { key: 'w1',    label: 'Workout one',    sub: '45 minutes, any activity.' },
+      { key: 'w2',    label: 'Workout two',    sub: '45 minutes outdoors, 3+ hours later.' },
+      { key: 'water', label: 'Water',          sub: (this.props.waterTarget ?? '3.8 litres') + ' of water.' },
+      { key: 'read',  label: 'Read',           sub: '10 pages of nonfiction. No audiobooks.' },
+      { key: 'photo', label: 'Progress photo', sub: 'Taken and saved.' }
+    ];
+  }
+
+  total() { return this.props.totalDays ?? 75; }
+  iso(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  parse(s) { const p = String(s).split('-').map(Number); return new Date(p[0], p[1] - 1, p[2]); }
+  addDays(s, n) { const d = this.parse(s); d.setDate(d.getDate() + n); return d; }
+  diff(a, b) { return Math.round((this.parse(b) - this.parse(a)) / 86400000); }
+  fmt(d) { return DAYS[d.getDay()] + ' ' + d.getDate() + ' ' + MONTHS[d.getMonth()]; }
+
+  save(data) {
+    try { localStorage.setItem(KEY, JSON.stringify(data)); }
+    catch (e) { window.alert('This device is out of storage space. Remove some progress photos, or export a backup and reset.'); return false; }
+    this.setState({ data });
+    return true;
+  }
+  patchDay(n, patch) {
+    const d = this.state.data;
+    const days = Object.assign({}, d.days);
+    days[n] = Object.assign({}, days[n] || {}, patch);
+    return this.save(Object.assign({}, d, { days }));
+  }
+  dayData(n) { return ((this.state.data && this.state.data.days) || {})[n] || {}; }
+  countDone(n) { const d = this.dayData(n); return this.tasks().filter(t => d[t.key]).length; }
+  isDone(n) { return this.countDone(n) === this.tasks().length; }
+
+  currentDay() {
+    if (!this.state.data || !this.state.data.startDate) return 1;
+    return Math.min(this.total(), Math.max(1, this.diff(this.state.data.startDate, this.iso(new Date())) + 1));
+  }
+
+  renderVals() {
+    const loaded = this.state.loaded;
+    const data = this.state.data;
+    const started = !!(loaded && data && data.startDate);
+    const total = this.total();
+    const today = this.iso(new Date());
+
+    const base = {
+      today,
+      dateRef: this.dateRef,
+      fileRef: this.fileRef,
+      showSetup: loaded && !started,
+      showMain: started,
+      headerLabel: started ? 'Day' : 'Not started',
+      headerValue: started ? this.currentDay() + ' / ' + total : '—',
+      onStart: () => {
+        const v = (this.dateRef.current && this.dateRef.current.value) || today;
+        const prev = this.state.data || {};
+        this.save({ startDate: v, days: {}, attempt: prev.attempt || 1 });
+      },
+      onChangeStart: (e) => {
+        const v = e.target.value;
+        if (!v) return;
+        const d = this.state.data || {};
+        this.setState({ selected: null });
+        this.save(Object.assign({}, d, { startDate: v }));
+      },
+      onReset: () => {
+        if (!window.confirm('Reset to Day 1? Your current run is cleared and you pick a new start date.')) return;
+        const prev = this.state.data || {};
+        this.setState({ selected: null });
+        this.save({ startDate: null, days: {}, attempt: (prev.attempt || 1) + 1 });
+      },
+      onExport: () => {
+        const blob = new Blob([JSON.stringify(this.state.data || {}, null, 2)], { type: 'application/json' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = '75hard-backup-' + today + '.json';
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+      },
+      onImportClick: () => { if (this.fileRef.current) this.fileRef.current.click(); },
+      onImport: (e) => {
+        const f = e.target.files && e.target.files[0];
+        if (!f) return;
+        const r = new FileReader();
+        r.onload = () => {
+          try {
+            const d = JSON.parse(r.result);
+            if (d && d.startDate) { this.setState({ selected: null }); this.save({ startDate: d.startDate, days: d.days || {}, attempt: d.attempt || 1 }); }
+            else window.alert('That file does not look like a 75 Hard backup.');
+          } catch (err) { window.alert('Could not read that file.'); }
+        };
+        r.readAsText(f);
+        e.target.value = '';
+      }
+    };
+
+    if (!started) return Object.assign(base, { tasks: [], cells: [], missed: false });
+
+    const current = this.currentDay();
+    const selected = Math.min(total, Math.max(1, this.state.selected || current));
+    const selDate = this.addDays(data.startDate, selected - 1);
+
+    let doneCount = 0, missedDay = 0;
+    for (let n = 1; n <= total; n++) {
+      if (n > current) break;
+      if (this.isDone(n)) doneCount++;
+      else if (n < current && !missedDay) missedDay = n;
+    }
+
+    const tasks = this.tasks().map(t => {
+      const on = !!this.dayData(selected)[t.key];
+      return {
+        label: t.label, sub: t.sub, mark: on ? '\u2713' : '',
+        boxBorder: on ? '#c0904e' : '#3a4045',
+        boxBg: on ? 'rgba(192,144,78,.12)' : 'transparent',
+        titleColor: on ? '#8f8b82' : '#ece8e0',
+        strike: on ? 'line-through' : 'none',
+        toggle: () => { this.patchDay(selected, { [t.key]: !this.dayData(selected)[t.key] }); }
+      };
+    });
+
+    const cells = [];
+    for (let n = 1; n <= total; n++) {
+      const done = n <= current && this.isDone(n);
+      const missedCell = n < current && !done;
+      const isToday = n === current;
+      const future = n > current;
+      cells.push({
+        n,
+        bg: done ? '#c0904e' : 'transparent',
+        fg: done ? '#101112' : missedCell ? '#b4472c' : future ? '#55524b' : '#ece8e0',
+        border: done ? '#c0904e' : missedCell ? '#b4472c' : isToday ? '#ece8e0' : '#282c2f',
+        borderStyle: missedCell ? 'dashed' : 'solid',
+        outline: n === selected ? '1px solid #c0904e' : 'none',
+        cursor: future ? 'default' : 'pointer',
+        click: () => { if (!future) this.setState({ selected: n }); }
+      });
+    }
+
+    const q = QUOTES[(current - 1) % QUOTES.length];
+    const sel = this.countDone(selected);
+    const allDone = sel === this.tasks().length;
+
+    return Object.assign(base, {
+      tasks, cells,
+      selected,
+      selectedDate: this.fmt(selDate),
+      doneCount,
+      remaining: total - doneCount,
+      pct: Math.round((doneCount / total) * 100),
+      startLabel: this.fmt(this.parse(data.startDate)),
+      startDate: data.startDate,
+      attempt: data.attempt || 1,
+      dietNote: this.dayData(selected).dietNote || '',
+      onDietNote: (e) => { this.patchDay(selected, { dietNote: e.target.value }); },
+      photoBg: this.dayData(selected).photoData ? 'url("' + this.dayData(selected).photoData + '")' : 'none',
+      hasPhoto: !!this.dayData(selected).photoData,
+      noPhoto: !this.dayData(selected).photoData,
+      photoHint: this.dayData(selected).photoData ? 'Stored on this device' : 'Optional',
+      photoRef: this.photoRef,
+      onPhotoClick: () => { if (this.photoRef.current) this.photoRef.current.click(); },
+      onPhotoPick: (e) => {
+        const f = e.target.files && e.target.files[0];
+        e.target.value = '';
+        if (!f) return;
+        this.shrink(f)
+          .then((dataUrl) => { this.patchDay(selected, { photoData: dataUrl, photo: true }); })
+          .catch(() => window.alert('Could not read that image.'));
+      },
+      onPhotoRemove: () => {
+        if (!window.confirm('Remove this day\u2019s photo?')) return;
+        this.patchDay(selected, { photoData: null });
+      },
+      quote: q[0],
+      quoteBy: q[1],
+      missed: (this.props.strictMode ?? true) && !!missedDay,
+      missedDay,
+      dayStatus: allDone ? 'Day complete' : selected < current ? 'Incomplete' : 'In progress',
+      dayStatusColor: allDone ? '#c0904e' : selected < current ? '#b4472c' : '#8f8b82',
+      taskCountLabel: sel + ' of ' + this.tasks().length
+    });
+  }
+}
+
+</script>
+</body>
+</html>
